@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <style>
+        h1{
+            text-align: center;
+        }
+       li{
+        margin: 10 px 0px;
+        font-size: 18px;
+        text-transform: capitalize;
+        letter-spacing: 1px;
+        font-weight: 500;
+        &:hover{
+            color:#feac5e;
+        }
+       }
+       body{
+          background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKmNfM80np5wLcKU3NxqsbCkHpgytgS0Nv-w&s);
+          background-repeat: no-repeat;
+          background-size: cover;
+       }
+       .container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+       }
+       .btn{
+        padding: 8px 24px;
+        background-color: black;
+        color: #fff;
+        font-size: 18px;
+        border-radius: 3px;
+        border: none;
+        /* display: flex; */
+        /* justify-content: center; */
+        /* align-items: center; */
+       }
+
+       input {
+        padding: 6px 2px;
+        min-width: 320px;
+        font-size: 18px;
+        /* display: grid; */
+        /* justify-content: center; */
+        /* align-items: center; */
+        /* margin: 10px 230px; */
+       }
+    </head>
+    </style>
+    <body>
+<h1>TODO LIST IN LOCAL STORAGE</h1>
+<form>
+    <div class="container">
+        <input type="text" value="" class="todoValue" />
+        <button class="btn">Add Todo </button>
+        </div>
+        <div class="todoLists"> </div>       
+    </form>
+    <script>
+       const todoLists = document.querySelector(".todoLists");
+       const listValue = document.querySelector(".todoValue");
+       let todoListValue = [];
+
+       const getTodoListFromLS = () => {
+          return JSON.parse(localStorage.getItem('todoData')) || [];
+       };
+
+       const addTodoListLocalStorage = (todo) => {
+          return localStorage.setItem('todoData', JSON.stringify(todo));
+
+       };
+
+       const showTodoList = () => {
+        todoListValue = getTodoListFromLS();
+        todoListValue.forEach((curTodo) => {
+            const liElement = document.createElement("li");
+            liElement.innerHTML = curTodo;
+            todoLists.append(liElement); 
+        });
+       };
+
+       const removeTodoList = (e) => {
+         console.log(e.target.textContent);
+         console.log(todoListValue);
+
+         updatedTodoList = todoListValue.filter((curTodoValue) => curTodoValue == e.target.textContent
+         );
+         console.log(updatedTodoList);
+       };
+
+       const addTodoList = (e) => {
+          e.preventDefault();
+
+          todoListValue = getTodoListFromLS();
+          let newTodo =  listValue.value.trim();
+          console.log(newTodo);
+
+          listValue.value = "";
+           
+
+          if(newTodo.length  != 0 && !todoListValue.includes(newTodo)) {
+            console.log(typeof todoListValue);
+            todoListValue.push(newTodo);
+            /* todoListValue = [... new Set(todoListValue)] */
+
+            addTodoListLocalStorage(todoListValue);
+
+            /* console.log("Hello Js Best Course ");  */
+            const liElement = document.createElement("li");
+            liElement.innerHTML = newTodo;
+            todoLists.append(liElement);
+          }         
+       };
+
+       showTodoList();
+
+       document.querySelector(".btn").addEventListener("click", (e) => {
+        addTodoList(e);
+    });
+
+    todoLists.addEventListener("click", (e) => removeTodoList(e))
+    </script>
+</body>
+</html>
